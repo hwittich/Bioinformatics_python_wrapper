@@ -1,10 +1,10 @@
 library(sleuth)
 
-args = commandArgs(trailingOnly=TRUE)
-if(args[0]=="True"){
-  output_dir="test_outputs"
+args <- commandArgs(trailingOnly=TRUE)
+if(args[1]=="True"){
+  output_dir<-"test_outputs"
 } else {
-  output_dir="miniProject_Henry_Wittich"
+  output_dir<-"miniProject_Henry_Wittich"
 }
 
 #read in the table describing samples and kallisto output
