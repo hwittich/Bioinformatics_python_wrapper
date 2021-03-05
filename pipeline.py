@@ -45,40 +45,7 @@ if (test == False): #Only if it isn't a test run #Need to download data from onl
 		os.system(fastq_dump_command)
 		sample_paths[sample] = [data+"/"+sample+".1_1.fastq",data+"/"+sample+".1_2.fastq"]
 
-	#Retrieving the reference transcriptome for kallisto
-	CDS_count = 0 #store the number of coding sequences
-	handle = Entrez.efetch(db="nucleotide",id="EF999921",rettype="gb",retmode="text")
-	record=SeqIO.read(handle,"genbank") #read in genbank entry
-	handle.close()
-	transcriptome_path = data+"/HCMV_transcriptome.fa" #path to the transcriptome file
-	transcriptome = open(transcriptome_path,"w") #open file to write all CDS
-	for feature in record.features: #iterate through list of features
-		if feature.type == "CDS":
-			CDS_count+=1
-			transcriptome.write(">"+str(record.id)+"\n") #write the sequence ID
-			transcriptome.write(str(feature.extract(record.seq))+"\n") #write the coding sequence
-	transcriptome.close()
-	#Print number of CDS to outfile file
-	outfile.write("The HCMV genome (EF999921) has "+str(CDS_count)+" CDS.\n")
-
-	#Retrieving the reference genome for bowtie2
-	handle=Entrez.efetch(db="nucleotide",id="EF999921",rettype="fasta",retmode="text")
-	record=SeqIO.read(handle,"fasta")
-	handle.close()
-
-	genome_path = data+"/HCMV_genome.fa" #path to the genome file
-	genome = open(genome_path,"w")
-	genome.write(">"+str(record.id)+"\n")
-	genome.write(str(record.seq)+"\n")
-	genome.close()
-
-	#Retrieving Betaherpesvirinae sequences for BLAST db
-	os.system("wget https://github.com/hwittich/COMP383_mini_project/raw/main/data/sequence.fasta.gz")
-	#Unzip the file
-	os.system("gunzip sequence.fasta.gz")
-	subfamily_path = data+"/sequence.fasta"
-
-	os.chdir(root) #move out of data directory to perform rest of analysis
+	os.chdir(root) #move back to root
 
 else: #If it is a test run, data is already stored in data directory
 	#Creating the output directory
@@ -92,13 +59,41 @@ else: #If it is a test run, data is already stored in data directory
 	for sample in sample_IDs:
         	sample_paths[sample] = [data+"/"+sample+".1_1_test.fastq",data+"/"+sample+".1_2_test.fastq"]
 
-	#Defining other paths
-	transcriptome_path = data+"/HCMV_transcriptome.fa" #path to the transcriptome file
-	genome_path = data+"/HCMV_genome.fa" #path to the genome file
-	subfamily_path = data+"/sequence.fasta"
+#Retrieving the reference transcriptome for kallisto
+os.chdir("data")
+CDS_count = 0 #store the number of coding sequences
+handle = Entrez.efetch(db="nucleotide",id="EF999921",rettype="gb",retmode="text")
+record=SeqIO.read(handle,"genbank") #read in genbank entry
+handle.close()
+transcriptome_path = data+"/HCMV_transcriptome.fa" #path to the transcriptome file
+transcriptome = open(transcriptome_path,"w") #open file to write all CDS
+for feature in record.features: #iterate through list of features
+        if feature.type == "CDS":
+                CDS_count+=1
+                transcriptome.write(">"+str(record.id)+"\n") #write the sequence ID
+                transcriptome.write(str(feature.extract(record.seq))+"\n") #write the coding sequence
+transcriptome.close()
+#Print number of CDS to outfile file
+outfile.write("The HCMV genome (EF999921) has "+str(CDS_count)+" CDS.\n")
 
-	#Writing to the output file
-	outfile.write("The HCMV genome (EF999921) has x CDS.\n")
+#Retrieving the reference genome for bowtie2
+handle=Entrez.efetch(db="nucleotide",id="EF999921",rettype="fasta",retmode="text")
+record=SeqIO.read(handle,"fasta")
+handle.close()
+
+genome_path = data+"/HCMV_genome.fa" #path to the genome file
+genome = open(genome_path,"w")
+genome.write(">"+str(record.id)+"\n")
+genome.write(str(record.seq)+"\n")
+genome.close()
+
+#Retrieving Betaherpesvirinae sequences for BLAST db
+os.system("wget https://github.com/hwittich/COMP383_mini_project/raw/main/data/sequence.fasta.gz")
+#Unzip the file
+os.system("gunzip sequence.fasta.gz")
+subfamily_path = data+"/sequence.fasta"
+
+os.chdir(root) #move out of data directory to perform rest of analysis
 
 #Building kallisto index
 os.system("mkdir "+outdir+"/kallisto") #making kallisto output directory
