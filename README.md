@@ -43,7 +43,7 @@ library(dplyr)
 	```
 	**Test run option 2:**
 	```
-	python3 pipeline.py -t
+	python3 pipeline.py --test
 	```
 	**Running with full dataset:**
 	```
