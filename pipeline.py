@@ -87,9 +87,7 @@ genome.write(">"+str(record.id)+"\n")
 genome.write(str(record.seq)+"\n")
 genome.close()
 
-#Retrieving Betaherpesvirinae sequences for BLAST db
-os.system("wget https://github.com/hwittich/COMP383_mini_project/raw/main/data/sequence.fasta.gz")
-#Unzip the file
+#Unzip the Betaherpesvirinae sequences file
 os.system("gunzip sequence.fasta.gz")
 subfamily_path = data+"/sequence.fasta"
 
