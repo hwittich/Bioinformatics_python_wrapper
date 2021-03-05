@@ -41,7 +41,7 @@ if (test == False): #Only if it isn't a test run #Need to download data from onl
 	for sample in sample_IDs: #loop through list of IDs to retrieve data
 		os.system("wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-11/"+sample+"/"+sample+".1")
 		#Making paired-end fastq files
-		fastq_dump_command = "fastq-dump --split-files "+sample+".1 -O "+data+"/"+sample #store paired-end fastq files in data directory
+		fastq_dump_command = "fastq-dump --split-files "+sample+".1 -O "+data #store paired-end fastq files in data directory
 		os.system(fastq_dump_command)
 		sample_paths[sample] = [data+"/"+sample+".1_1.fastq",data+"/"+sample+".1_2.fastq"]
 
