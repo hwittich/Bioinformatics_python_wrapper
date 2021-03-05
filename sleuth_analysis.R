@@ -8,7 +8,7 @@ if(args[1]=="True"){
 }
 
 #read in the table describing samples and kallisto output
-stab <- read.table(output_dir+"/kallisto/sample_table.tsv",header=TRUE,stringsAsFactors = FALSE,sep="\t")
+stab <- read.table(paste(output_dir,"/kallisto/sample_table.tsv",sep=""),header=TRUE,stringsAsFactors = FALSE,sep="\t")
 #sleuth object
 so <- sleuth_prep(stab)
 
@@ -30,4 +30,4 @@ sleuth_significant <- dplyr::filter(sleuth_table, qval <= 0.05) %>% dplyr::arran
 
 #write the info for the significant SNPs to the output file
 output <- sleuth_significant[,c(1,4,2,3)]
-write.table(output, file=output_dir+"/miniProject.log",quote=FALSE,row.names=TRUE,sep="\t",append=TRUE)
+write.table(output, file=paste(output_dir,"/miniProject.log",sep=""),quote=FALSE,row.names=TRUE,sep="\t",append=TRUE)
