@@ -1,4 +1,6 @@
-# COMP383_mini_project
+# Bioinformatics Python Wrapper
+This project was created for COMP 383 - Bioinformatics, taught by Dr. Wheeler at Loyola University Chicago. The goal of the assignment was to learn how to construct a wrapper for running data through a bioinformatics pipeline. The bioinformatics tasks involved in this pipeline include quantifying reads from RNA Seq data using kallisto and sleuth, alignment with bowtie, assembly with SPAdes, and querying with BLAST.
+
 ---
 ## Languages and Packages
 ---
